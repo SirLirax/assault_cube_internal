@@ -1,5 +1,51 @@
 ﻿  pch.cpp
+  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui.cpp(2079,10): error C2006: "#include": FILENAME oder <FILENAME> erwartet.
+  imgui_impl_opengl2.cpp
+C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui.cpp(2898,9): warning C4005: "va_copy": Makro-Neudefinition
+      C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui.cpp(2896,9):
+      siehe vorherige Definition von "va_copy"
+  
+C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui.cpp(16966,1): error C1010: Unerwartetes Dateiende während der Suche nach dem vorkompilierten Header. Haben Sie möglicherweise vergessen, im Quellcode "#include "pch.h"" einzufügen?
+C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui_demo.cpp(164,9): warning C4005: "IM_NEWLINE": Makro-Neudefinition
+      C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui_demo.cpp(162,9):
+      siehe vorherige Definition von "IM_NEWLINE"
+  
+C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui_demo.cpp(180,9): warning C4005: "PRId64": Makro-Neudefinition
+      C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui_demo.cpp(177,9):
+      siehe vorherige Definition von "PRId64"
+  
+C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui_demo.cpp(181,9): warning C4005: "PRIu64": Makro-Neudefinition
+      C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui_demo.cpp(178,9):
+      siehe vorherige Definition von "PRIu64"
+  
+C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui_demo.cpp(198,9): warning C4005: "IMGUI_CDECL": Makro-Neudefinition
+      C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui_demo.cpp(196,9):
+      siehe vorherige Definition von "IMGUI_CDECL"
+  
+C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui_demo.cpp(10443,1): error C1010: Unerwartetes Dateiende während der Suche nach dem vorkompilierten Header. Haben Sie möglicherweise vergessen, im Quellcode "#include "pch.h"" einzufügen?
+C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui_draw.cpp(128,10): error C2006: "#include": FILENAME oder <FILENAME> erwartet.
+C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui_draw.cpp(152,10): error C2006: "#include": FILENAME oder <FILENAME> erwartet.
+C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui_draw.cpp(4841,1): error C1010: Unerwartetes Dateiende während der Suche nach dem vorkompilierten Header. Haben Sie möglicherweise vergessen, im Quellcode "#include "pch.h"" einzufügen?
+C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui_impl_opengl2.cpp(78,9): warning C4005: "GL_CALL": Makro-Neudefinition
+      C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui_impl_opengl2.cpp(76,9):
+      siehe vorherige Definition von "GL_CALL"
+  
+C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui_impl_opengl2.cpp(322,1): error C1010: Unerwartetes Dateiende während der Suche nach dem vorkompilierten Header. Haben Sie möglicherweise vergessen, im Quellcode "#include "pch.h"" einzufügen?
+  imgui_impl_win32.cpp
+C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui_impl_win32.cpp(941,1): error C1010: Unerwartetes Dateiende während der Suche nach dem vorkompilierten Header. Haben Sie möglicherweise vergessen, im Quellcode "#include "pch.h"" einzufügen?
+  imgui_tables.cpp
+C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui_tables.cpp(4502,1): error C1010: Unerwartetes Dateiende während der Suche nach dem vorkompilierten Header. Haben Sie möglicherweise vergessen, im Quellcode "#include "pch.h"" einzufügen?
+  imgui_widgets.cpp
+C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui_widgets.cpp(10405,1): error C1010: Unerwartetes Dateiende während der Suche nach dem vorkompilierten Header. Haben Sie möglicherweise vergessen, im Quellcode "#include "pch.h"" einzufügen?
   dllmain.cpp
-  hooking.cpp
-  Generating Code...
-C:\Users\laure\Desktop\projects\assault_cube_internal\ACInternal\ACInternal\hooking.cpp(13,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\ACInternal\dllmain.cpp(146,1): error C1010: Unerwartetes Dateiende während der Suche nach dem vorkompilierten Header. Haben Sie möglicherweise vergessen, im Quellcode "#include "pch.h"" einzufügen?
+  glDraw.cpp
+C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\ACInternal\glDraw.cpp(101,1): error C1010: Unerwartetes Dateiende während der Suche nach dem vorkompilierten Header. Haben Sie möglicherweise vergessen, im Quellcode "#include "pch.h"" einzufügen?
+  hook.cpp
+C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\ACInternal\hook.cpp(93,1): error C1010: Unerwartetes Dateiende während der Suche nach dem vorkompilierten Header. Haben Sie möglicherweise vergessen, im Quellcode "#include "pch.h"" einzufügen?
+  mem.cpp
+C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\ACInternal\mem.cpp(32,1): error C1010: Unerwartetes Dateiende während der Suche nach dem vorkompilierten Header. Haben Sie möglicherweise vergessen, im Quellcode "#include "pch.h"" einzufügen?
+  Code wird generiert...
