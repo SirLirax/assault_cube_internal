@@ -1,6 +1,7 @@
 #pragma once
 #include <windows.h>
 
+
 bool Detour32(BYTE* source, BYTE* destination, uintptr_t length);
 BYTE* TrampHook32(BYTE* source, BYTE* destination, uintptr_t length);
 

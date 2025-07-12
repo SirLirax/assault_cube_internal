@@ -4,69 +4,81 @@
 #include <gl/GL.h>
 #include "mem.h"
 #include "hook.h"
-#include "C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui.h"
-#include "C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui_impl_win32.h"
-#include "C:\Users\laure\Desktop\assaul_cube\assault_cube_internal\ACInternal\imgui\imgui_impl_opengl2.h"
+#include "menu.h"
+#include "hack.h"
+#include "imgui.h"
+#include "imgui_impl_win32.h"
+#include "imgui_impl_opengl2.h"
 
-#define local_player_pointer  0x17E0A8
-#define local_player_pointer1 0x18AC00
-#define local_player_pointer2 0x195404
-#define player_count_pointer 0x18AC0C
-#define entity_list_pointer 0x18AC04
-#define player_viewmatrix 0x17DFD0
+bool g_show_menu = true;
 
-extern HWND g_hWnd = nullptr;
+enum SDL_bool { SDL_FALSE = 0, SDL_TRUE = 1 };
+typedef int(__cdecl* tSDL_SetRelativeMouseMode)(SDL_bool enabled);
+static tSDL_SetRelativeMouseMode oSDL_SetRelativeMouseMode = nullptr;
 
-typedef BOOL(__stdcall* twglSwapBuffers) (HDC hDc);
-
-twglSwapBuffers wglSwapBuffersGateway;
-
-BOOL __stdcall hookWglSwapBuffers(HDC hDc)
+int __cdecl hkSDL_SetRelativeMouseMode(SDL_bool enabled)
 {
-	// Ensure we have a valid window handle.
-	if (g_hWnd == nullptr)
+	if (g_show_menu)
 	{
-		// Try to get the foreground window (the currently active window).
-		g_hWnd = GetForegroundWindow();
-		// As a fallback, try GetActiveWindow.
-		if (g_hWnd == nullptr)
-		{
-			g_hWnd = GetActiveWindow();
-		}
+		if (enabled == SDL_TRUE)
+			return 0;
+		else
+			return oSDL_SetRelativeMouseMode(enabled);
+	}
+	else
+	{
+		return oSDL_SetRelativeMouseMode(enabled);
+	}
+}
+
+typedef BOOL(__stdcall* tWGL_SwapBuffers) (HDC hDc);
+static tWGL_SwapBuffers oWGL_SwapBuffersGateway = nullptr;
+
+BOOL __stdcall hkWGL_SwapBuffers(HDC hDc)
+{
+	static bool menuCreated = false;
+	static Menu menu;
+	if (!menuCreated) {
+		menu.Create();
+		menu.Initialize();
+		menuCreated = true;
 	}
 
-	static bool g_ImGuiInitialized = false;
-	if (!g_ImGuiInitialized)
+	if (GetAsyncKeyState(VK_INSERT) & 1)
 	{
-		ImGui::CreateContext();
-		ImGui::StyleColorsDark();
+		bool wasOpen = menu.visible;
+		menu.visible = !menu.visible;
+		g_show_menu = menu.visible;
 
-		if (!ImGui_ImplWin32_Init(g_hWnd))
+		if (!wasOpen && menu.visible)
 		{
-			MessageBoxA(NULL, "ImGui_ImplWin32_Init failed!", "Error", MB_OK);
+			if (oSDL_SetRelativeMouseMode)
+			{
+				oSDL_SetRelativeMouseMode(SDL_FALSE);
+			}
 		}
-		
-		if (!ImGui_ImplOpenGL2_Init())
+		else if (wasOpen && !menu.visible)
 		{
-			MessageBoxA(NULL, "ImGui_ImplOpenGL2_Init failed!", "Error", MB_OK);
+			if (oSDL_SetRelativeMouseMode)
+			{
+				oSDL_SetRelativeMouseMode(SDL_TRUE);
+			}
 		}
-
-		g_ImGuiInitialized = true;
 	}
-
+	// Begin a new ImGui frame.
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
-	ImGui::Begin("Assault Cube Overlay");
-	ImGui::Text("Hello from ImGui in Assault Cube (OpenGL2)!");
-	ImGui::End();
+	// Render the menu.
+	menu.renderMenu();
+	RunHack(); // This calls your Esp() among others.
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
-
-	return wglSwapBuffersGateway(hDc);
+	return oWGL_SwapBuffersGateway(hDc);
 }
+
 
 void initialzeConsole(FILE** f)
 {
@@ -87,18 +99,27 @@ HMODULE getModuleBaseAddress(LPCWSTR executeable_name)
 	return nullptr;
 }
 
-twglSwapBuffers initializeHook()
+void initalizeHooks()
 {
-	printf("[~] Initializing hook.\n");
-	twglSwapBuffers originalSwapBuffers = (twglSwapBuffers)GetProcAddress(GetModuleHandle(L"opengl32.dll"), "wglSwapBuffers");
-	twglSwapBuffers trampolinePointer = (twglSwapBuffers)TrampHook32((BYTE*)originalSwapBuffers, (BYTE*)hookWglSwapBuffers, 5);
-	if (trampolinePointer == nullptr)
+	std::cout << "[~] Initializing wglSwapBuffers hook.\n";
+	Hook wglSwapBufferHook((BYTE*)GetProcAddress(GetModuleHandle(L"opengl32.dll"), "wglSwapBuffers"), (BYTE*)hkWGL_SwapBuffers, (BYTE*)&oWGL_SwapBuffersGateway, 5);
+	if (!oWGL_SwapBuffersGateway)
 	{
-		printf("[-] Hooking failed.\n");
-		return nullptr;
+		std::cout << "[-] Hooking wglSwapBuffers failed.\n";
 	}
-	printf("[+] Hooked wglSwapbuffers\n");
-	return trampolinePointer;
+
+
+	std::cout << "[~] Initializing SDL_SetRelativeMouseMode hook.\n";
+	Hook sdlHook((BYTE*)GetProcAddress(GetModuleHandle(L"SDL2.dll"), "SDL_SetRelativeMouseMode"), (BYTE*)hkSDL_SetRelativeMouseMode, (BYTE*)&oSDL_SetRelativeMouseMode, 7);
+	if (!oWGL_SwapBuffersGateway)
+	{
+		std::cout << "[-] Hooking SDL_SetRelativeMouseMode failed.\n";
+	}
+
+	std::cout << "[~] Enabling hooks.\n";
+	wglSwapBufferHook.enableHook();
+	sdlHook.enableHook();
+	std::cout << "[+] Hooks enabled.\n";
 }
 
 DWORD mainThread()
@@ -107,11 +128,8 @@ DWORD mainThread()
 	initialzeConsole(&file);
 	std::cout << "[+] Console initialized.\n";
 	HANDLE module_base_address = getModuleBaseAddress(L"ac_client.exe");
-	twglSwapBuffers trampoline = initializeHook();
-	if (trampoline != nullptr)
-	{
-		wglSwapBuffersGateway = trampoline;
-	}
+	initalizeHooks();
+	CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE)UpdateEntityList, nullptr, 0, nullptr);
 	std::cout << "[*] Press END to exit.\n";
 	while (!GetAsyncKeyState(VK_END))
 	{
